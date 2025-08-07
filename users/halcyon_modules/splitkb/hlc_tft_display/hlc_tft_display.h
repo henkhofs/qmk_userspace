@@ -14,16 +14,26 @@
 #define HSV_SCROLL_ON 202, 191, 245
 #define HSV_NUM_OFF 142, 104, 77
 #define HSV_NUM_ON 142, 191, 245
+#define HSV_CTRL_OFF 30, 104, 77
+#define HSV_CTRL_ON 30, 191, 245
+#define HSV_SHIFT_OFF 240, 104, 77
+#define HSV_SHIFT_ON 240, 191, 245
+#define HSV_ALT_OFF 180, 104, 77
+#define HSV_ALT_ON 180, 191, 245
+#define HSV_GUI_OFF 120, 104, 77
+#define HSV_GUI_ON 120, 191, 245
+#define HSV_WPM_SLOW 0, 104, 77
+#define HSV_WPM_MEDIUM 180, 191, 245
+#define HSV_WPM_FAST 60, 191, 245
 
-#define HSV_LAYER_0 0, 0, 160
-#define HSV_LAYER_3 0, 82, 255
-#define HSV_LAYER_1 23, 89, 255
-#define HSV_LAYER_2 43, 71, 255
-#define HSV_LAYER_4 77, 64, 255
-#define HSV_LAYER_6 131, 99, 255
-#define HSV_LAYER_7 154, 94, 255
-#define HSV_LAYER_5 176, 77, 255
-// #define HSV_LAYER_8 213, 56, 255
+#define HSV_LAYER_0 0, 0, 120
+#define HSV_LAYER_1 30, 255, 200
+#define HSV_LAYER_2 180, 255, 200
+#define HSV_LAYER_3 0, 255, 200
+#define HSV_LAYER_4 60, 255, 200
+#define HSV_LAYER_5 220, 255, 200
+#define HSV_LAYER_6 120, 255, 200
+#define HSV_LAYER_7 210, 255, 200
 #define HSV_LAYER_UNDEF 0, 255, 255
 
 extern painter_device_t lcd;
