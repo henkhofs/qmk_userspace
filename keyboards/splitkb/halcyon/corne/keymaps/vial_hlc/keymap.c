@@ -18,6 +18,18 @@ void dance_0_reset(tap_dance_state_t *state, void *user_data) {
 }
 
 
+// Encoder push on the right half, per layer
+const uint16_t right_halcyon_buttons[10][5] = {
+    [0] = { KC_MUTE, _______, _______, _______, _______ },
+    [1] = { KC_HOME, _______, _______, _______, _______ },
+    [2] = { KC_NO,   _______, _______, _______, _______ },
+    [3] = { KC_NO,   _______, _______, _______, _______ },
+    [4] = { KC_NO,   _______, _______, _______, _______ },
+    [5] = { _______, _______, _______, _______, _______ },
+    [6] = { KC_NO,   _______, _______, _______, _______ },
+    [7] = { _______, _______, _______, _______, _______ },
+};
+
 // RGB underglow colors for layers (HSV format)
 #define HSV_LAYER_0_RGB   0, 0, 120        // Dim white for base layer
 #define HSV_LAYER_1_RGB   30, 255, 200    // Bright orange for navigation/media

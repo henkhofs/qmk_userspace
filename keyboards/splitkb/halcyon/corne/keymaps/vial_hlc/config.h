@@ -12,3 +12,6 @@
 #define RGB_MATRIX_KEYPRESSES
 
 #define DYNAMIC_KEYMAP_LAYER_COUNT 8
+
+// Map the Halcyon module buttons (encoder push) from keymap.c instead of Vial
+#define HALCYON_BUTTONS_ENABLE

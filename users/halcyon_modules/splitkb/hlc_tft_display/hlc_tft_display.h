@@ -22,9 +22,6 @@
 #define HSV_ALT_ON 180, 191, 245
 #define HSV_GUI_OFF 120, 104, 77
 #define HSV_GUI_ON 120, 191, 245
-#define HSV_WPM_SLOW 0, 104, 77
-#define HSV_WPM_MEDIUM 180, 191, 245
-#define HSV_WPM_FAST 60, 191, 245
 
 #define HSV_LAYER_0 0, 0, 120
 #define HSV_LAYER_1 30, 255, 200
