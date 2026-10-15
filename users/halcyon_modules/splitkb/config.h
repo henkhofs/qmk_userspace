@@ -12,6 +12,10 @@
 
 #define HLC_BACKLIGHT_TIMEOUT 120000
 
+// Split link recovery: heartbeat interval and how long a lost link may last before resetting (ms)
+#define HLC_SPLIT_HEARTBEAT_INTERVAL 500
+#define HLC_SPLIT_RECOVERY_TIMEOUT 3000
+
 #define BACKLIGHT_PWM_DRIVER PWMD5
 #define BACKLIGHT_LEVELS 10
 #define BACKLIGHT_PWM_CHANNEL RP2040_PWM_CHANNEL_B

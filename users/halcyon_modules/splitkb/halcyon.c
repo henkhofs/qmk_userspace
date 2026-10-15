@@ -62,9 +62,15 @@ void backlight_suspend(void) {
     backlight_disable();
 }
 
+// Last time the slave received a module sync, doubles as a heartbeat
+static volatile uint32_t last_heartbeat = 0;
+static volatile bool     heartbeat_seen = false;
+
 void module_sync_slave_handler(uint8_t initiator2target_buffer_size, const void *initiator2target_buffer, uint8_t target2initiator_buffer_size, void *target2initiator_buffer) {
     if (initiator2target_buffer_size == sizeof(module)) {
         memcpy(&module_master, initiator2target_buffer, sizeof(module_master));
+        last_heartbeat = timer_read32();
+        heartbeat_seen = true;
     }
 }
 
@@ -93,15 +99,31 @@ void keyboard_post_init_kb(void) {
 
 void housekeeping_task_kb(void) {
     if (is_keyboard_master()) {
-        static bool synced = false;
+        static bool     synced    = false;
+        static uint32_t last_sync = 0;
+        static uint32_t lost_since = 0;
+        static bool     lost       = false;
 
-        if (!synced) {
-            if (is_transport_connected()) {
+        if (is_transport_connected()) {
+            lost = false;
+            // Resync periodically so the slave knows we are alive and gets module info back after a reset
+            if (!synced || timer_elapsed32(last_sync) > HLC_SPLIT_HEARTBEAT_INTERVAL) {
                 transaction_rpc_send(MODULE_SYNC, sizeof(module), &module); // Sync to slave
-                wait_ms(10);
-                // Good moment to make sure the backlight wakes up after boot for both halves
-                backlight_wakeup();
-                synced = true;
+                last_sync = timer_read32();
+                if (!synced) {
+                    wait_ms(10);
+                    // Good moment to make sure the backlight wakes up after boot for both halves
+                    backlight_wakeup();
+                    synced = true;
+                }
+            }
+        } else if (synced) {
+            // Split link was up but is gone (e.g. after host sleep/wake), reset like a replug would
+            if (!lost) {
+                lost_since = timer_read32();
+                lost       = true;
+            } else if (timer_elapsed32(lost_since) > HLC_SPLIT_RECOVERY_TIMEOUT) {
+                mcu_reset();
             }
         }
 
@@ -110,6 +132,11 @@ void housekeeping_task_kb(void) {
 
     if (!is_keyboard_master()) {
         display_module_housekeeping_task_kb(module_master == hlc_tft_display);
+
+        // Master went quiet after having talked to us, reset to recover the split link
+        if (heartbeat_seen && timer_elapsed32(last_heartbeat) > HLC_SPLIT_RECOVERY_TIMEOUT) {
+            mcu_reset();
+        }
     }
 
     // Backlight feature
